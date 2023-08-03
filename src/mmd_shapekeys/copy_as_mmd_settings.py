@@ -32,6 +32,9 @@ def determine_prefix(shapekeys) -> str:
         if matches:
             return matches.group(1)
 
+    # prefix could not be determined
+    return ""
+
 
 class CopyAsMMDSettings(bpy.types.PropertyGroup):
     # Visemes

@@ -16,8 +16,8 @@ bl_info = {
     "name": "Copy to MMD Shape Keys",
     "author": "ShyWolf42",
     "description": "Copies English shape keys to their Japanese counterparts for MMD animations.",
-    "blender": (2, 80, 0),
-    "version": (0, 1, 0),
+    "blender": (3, 0, 0),
+    "version": (1, 0, 1),
     "location": "",
     "warning": "",
     "category": "Mesh"
