@@ -30,7 +30,7 @@ def determine_prefix(shapekeys) -> str:
     for sk in shapekeys:
         matches = re.match(VISEME_PREFIX_REGEX, sk.name)
         if matches:
-            return matches.group(1)
+            return matches.group(1) or ""
 
     # prefix could not be determined
     return ""
