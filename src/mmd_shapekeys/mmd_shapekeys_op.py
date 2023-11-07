@@ -38,8 +38,10 @@ MMD_SHAPEKEYS = {
 }
 
 
-def copy_shapekey(shapekey, target: str):
-    if not shapekey or target is None:
+def copy_shapekey(shapekey: bpy.types.ShapeKey, target: str):
+    if (not shapekey
+            or target is None
+            or shapekey.name == target):
         return
 
     shapekey.value = 1

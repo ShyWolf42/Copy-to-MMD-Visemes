@@ -29,7 +29,8 @@ class DuplicateVisemeAsMmdPanel(bpy.types.Panel):
             return
 
         # self.prefill_form(context)
-
+        row = layout.row()
+        row.prop(settings, "prefill_existing_JP_shapekeys", text="Prefill Existing Target Shape Keys As Placeholder?")
         row = layout.row()
         row.operator("mesh.duplicate_mmd_shapekeys_prefill")
 

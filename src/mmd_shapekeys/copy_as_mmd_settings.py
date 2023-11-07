@@ -61,7 +61,12 @@ class CopyAsMMDSettings(bpy.types.PropertyGroup):
     lower:          bpy.props.StringProperty(description="Eyebrows lowered")
     anger:          bpy.props.StringProperty()
     sadness:        bpy.props.StringProperty()
-    # @formatter: on
+    # @formatter:on
+
+    prefill_existing_JP_shapekeys: bpy.props.BoolProperty(
+        default=True,
+        description="Prefill with existing Japanese shape keys? \n"
+                    "(Those shape keys will not be duplicated, only act as a placeholder)")
 
     def set_attribute(self, attribute: str, value: str) -> None:
         if not attribute:
