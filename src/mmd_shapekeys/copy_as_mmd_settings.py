@@ -38,6 +38,13 @@ def determine_prefix(shapekeys: List[bpy.types.ShapeKey]) -> str:
     return ""
 
 
+def show_message_box(message="", title="Message Box", icon='INFO'):
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
+
+
 class CopyAsMMDSettings(bpy.types.PropertyGroup):
     # Visemes
     # @formatter:off
@@ -90,14 +97,16 @@ class CopyAsMMDSettings(bpy.types.PropertyGroup):
             self.set_attribute(attribute.replace("wink2", "wink_2"), value)
 
     def import_from_json(self, json_string: str, shapekeys: List[bpy.types.ShapeKey]) -> None:
-        shapekey_names = [sk.name.lower() for sk in shapekeys]
-        json_data = json.loads(json_string)
-
-        for (key, value) in json_data.items():
-            print(key, value)
-            # ignore references to shapekeys that do not exist on the model
-            if hasattr(self, key) and value.lower() in shapekey_names:
-                setattr(self, key, value)
+        try:
+            json_data = json.loads(json_string)
+            shapekey_names = [sk.name.lower() for sk in shapekeys]
+            for (key, value) in json_data.items():
+                print(key, value)
+                # ignore references to shapekeys that do not exist on the model
+                if hasattr(self, key) and value.lower() in shapekey_names:
+                    setattr(self, key, value)
+        except json.JSONDecodeError:
+            show_message_box("Data is not a valid JSON", "Import Error", "ERROR")
 
     def export_to_json(self) -> str:
         data = {
