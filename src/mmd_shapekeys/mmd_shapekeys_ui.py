@@ -16,7 +16,7 @@ class DuplicateVisemeAsMmdPanel(bpy.types.Panel):
     bl_region_type = 'WINDOW'
     bl_context = "data"
 
-    def draw(self, context):
+    def draw(self, context: bpy.types.Context):
         layout = self.layout
 
         obj = context.active_object
@@ -30,12 +30,18 @@ class DuplicateVisemeAsMmdPanel(bpy.types.Panel):
 
         # self.prefill_form(context)
         row = layout.row()
-        row.prop(settings, "prefill_existing_JP_shapekeys", text="Prefill Existing Target Shape Keys As Placeholder?")
+        row.prop(settings, "prefill_existing_JP_shapekeys", text="Fill Existing Target Shape Keys As Placeholder")
         row = layout.row()
         row.operator("mesh.duplicate_mmd_shapekeys_prefill")
 
         row = layout.row()
+        row.scale_y = 2.0
         row.operator("mesh.duplicate_mmd_shapekeys")
+
+        # Import / Export
+        row = layout.row()
+        row.operator("mesh.duplicate_mmd_shapekeys_import_clipboard_json")
+        row.operator("mesh.duplicate_mmd_shapekeys_export_clipboard_json")
 
         row = layout.row()
         row.label(text="Visemes")
@@ -50,7 +56,7 @@ class DuplicateVisemeAsMmdPanel(bpy.types.Panel):
             row.prop_search(settings, shapekey[0], obj_shape_keys, "key_blocks", text=shapekey[1] or shapekey[0])
 
     @classmethod
-    def poll(cls, context):
+    def poll(cls, context: bpy.types.Context):
         obj = context.active_object
         if obj is None:
             return False
@@ -58,7 +64,7 @@ class DuplicateVisemeAsMmdPanel(bpy.types.Panel):
         return hasattr(obj.data, "shape_keys")
 
     @classmethod
-    def prefill_form(cls, context):
+    def prefill_form(cls, context: bpy.types.Context):
         obj = context.active_object
         obj_shape_keys = obj.data.shape_keys.key_blocks
         settings: CopyAsMMDSettings = obj.CopyAsMMDSettings

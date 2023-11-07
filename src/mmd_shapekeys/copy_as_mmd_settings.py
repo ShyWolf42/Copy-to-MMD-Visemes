@@ -1,5 +1,7 @@
+import json
 import logging
 import re
+from typing import List
 
 import bpy
 
@@ -26,7 +28,7 @@ SHAPEKEY_LIST = [("blink_happy", "blink happy"),
                  ("sadness", None)]
 
 
-def determine_prefix(shapekeys) -> str:
+def determine_prefix(shapekeys: List[bpy.types.ShapeKey]) -> str:
     for sk in shapekeys:
         matches = re.match(VISEME_PREFIX_REGEX, sk.name)
         if matches:
@@ -86,3 +88,40 @@ class CopyAsMMDSettings(bpy.types.PropertyGroup):
             self.set_attribute("e", value)
         elif attribute.startswith("wink2"):
             self.set_attribute(attribute.replace("wink2", "wink_2"), value)
+
+    def import_from_json(self, json_string: str, shapekeys: List[bpy.types.ShapeKey]) -> None:
+        shapekey_names = [sk.name.lower() for sk in shapekeys]
+        json_data = json.loads(json_string)
+
+        for (key, value) in json_data.items():
+            print(key, value)
+            # ignore references to shapekeys that do not exist on the model
+            if hasattr(self, key) and value.lower() in shapekey_names:
+                setattr(self, key, value)
+
+    def export_to_json(self) -> str:
+        data = {
+            "ah": self.ah,
+            "ch": self.ch,
+            "u": self.u,
+            "e": self.e,
+            "oh": self.oh,
+            "blink_happy": self.blink_happy,
+            "blink": self.blink,
+            "close_X": self.close_X,
+            "calm": self.calm,
+            "stare": self.stare,
+            "wink": self.wink,
+            "wink_right": self.wink_right,
+            "wink_2": self.wink_2,
+            "wink_2_right": self.wink_2_right,
+            "cheerful": self.cheerful,
+            "serious": self.serious,
+            "upper": self.upper,
+            "lower": self.lower,
+            "anger": self.anger,
+            "sadness": self.sadness,
+        }
+        # Remove empty values
+        data = {k: v for k, v in data.items() if v}
+        return json.dumps(data, indent=2)

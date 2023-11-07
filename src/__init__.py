@@ -23,7 +23,8 @@ bl_info = {
     "category": "Mesh"
 }
 
-from .mmd_shapekeys import mmd_shapekeys_ui, mmd_shapekeys_op, copy_as_mmd_settings, prefill_op
+from .mmd_shapekeys import (mmd_shapekeys_ui, mmd_shapekeys_op, copy_as_mmd_settings, prefill_op,
+                            json_export_op, json_import_op)
 
 if "bpy" in locals():
     import importlib
@@ -32,6 +33,8 @@ if "bpy" in locals():
     importlib.reload(mmd_shapekeys_ui)
     importlib.reload(copy_as_mmd_settings)
     importlib.reload(prefill_op)
+    importlib.reload(json_export_op)
+    importlib.reload(json_import_op)
 
 import bpy
 
@@ -39,7 +42,9 @@ CLASSES_TO_REGISTER = [
     mmd_shapekeys_op.DuplicateVisemeAsMmdShapekey,
     mmd_shapekeys_ui.DuplicateVisemeAsMmdPanel,
     copy_as_mmd_settings.CopyAsMMDSettings,
-    prefill_op.PrefillMmdShapekey
+    prefill_op.PrefillMmdShapekey,
+    json_export_op.JsonClipboardExport,
+    json_import_op.JsonClipboardImport
 ]
 
 
