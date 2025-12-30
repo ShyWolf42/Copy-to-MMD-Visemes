@@ -46,7 +46,11 @@ def copy_shapekey(shapekey: bpy.types.ShapeKey, target: str):
 
     shapekey.value = 1
     bpy.ops.object.shape_key_add(from_mix=True)
-    bpy.context.object.active_shape_key.name = target
+
+    target_shape_key = bpy.context.object.active_shape_key
+    target_shape_key.name = target
+    target_shape_key.value = 0
+
     shapekey.value = 0
 
 
